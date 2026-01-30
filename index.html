@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXORA | The Art of Dining</title>
+    <link rel="stylesheet" href="styles/global.css">
+    <style>
+        /* Local overrides for 3D integration */
+        .webgl-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+            /* Behind content */
+            pointer-events: all;
+            /* Allow interaction */
+        }
+
+        main {
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-section {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Transparent bg to see Three.js */
+        }
+
+        .hero-title {
+            text-align: center;
+            mix-blend-mode: overlay;
+            /* Interaction with 3D */
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .hero-title span {
+            display: inline-block;
+            opacity: 0;
+            /* JS reveal */
+        }
+
+        /* Loading Screen */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: #081013;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .loader-text {
+            font-family: 'Cinzel', serif;
+            color: var(--color-gold);
+            font-size: 1.5rem;
+            letter-spacing: 0.2em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Loading Screen -->
+    <div class="loader">
+        <div class="loader-text">LUXORA</div>
+    </div>
+
+    <!-- 3D Canvas (The Stage) -->
+    <div class="webgl-container" id="webgl-container"></div>
+
+    <!-- Grain Overlay -->
+    <div class="grain-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-logo">LUXORA</div>
+        <div class="nav-links">
+            <a href="#menu" class="nav-link">Menu</a>
+            <a href="#story" class="nav-link">Story</a>
+            <a href="#reservations" class="nav-btn">Reservations</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section (Content Only) -->
+        <section class="hero-section">
+            <h1 class="hero-title" id="hero-title">LUXORA</h1>
+        </section>
+
+        <!-- Brand Story - Editorial -->
+        <section class="section-padding brand-story" id="story">
+            <div class="container grid-editorial">
+                <div class="editorial-text fade-in-up">
+                    <span class="eyebrow">The Philosophy</span>
+                    <h2>Architecture of Taste</h2>
+                    <p class="story-p">
+                        LUXORA is not merely a restaurant; it is a theatre of the senses.
+                        Inspired by the quiet precision of Tokyo's finest omakase dens and
+                        the grandeur of European dining halls.
+                    </p>
+                    <p class="story-p">
+                        Every ingredient is a protagonist. Every plate, a scene.
+                        We invite you to lose yourself in the narrative of flavor.
+                    </p>
+                    <div class="signature">Chef Adachi</div>
+                </div>
+                <div class="editorial-image-wrapper parallax-img">
+                    <img src="assets/dining hall.jpg" alt="Dining Hall" class="editorial-img">
+                </div>
+            </div>
+        </section>
+
+        <!-- Chef Story - Cinematic -->
+        <section class="section-padding chef-story" id="chef">
+            <div class="chef-bg-wrapper">
+                <img src="assets/chef story image.jpg" alt="Chef Adachi" class="chef-bg-img">
+                <div class="overlay-dark"></div>
+            </div>
+            <div class="container relative z-10">
+                <blockquote class="chef-quote">
+                    "True luxury is the absence of noise. <br>
+                    It is the sound of the knife, the steam, the silence."
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- Signature Menu - 3D Hover Cards -->
+        <section class="section-padding menu-section" id="menu">
+            <div class="container">
+                <div class="section-header fade-in-up">
+                    <span class="eyebrow">The Collection</span>
+                    <h2>Signature Creations</h2>
+                </div>
+
+                <div class="menu-grid">
+                    <!-- Card 1 -->
+                    <div class="menu-card tilt-card">
+                        <div class="menu-card-inner">
+                            <div class="menu-img-wrapper">
+                                <img src="assets/menu dish 1.jpg" alt="Dish 1" class="menu-img">
+                            </div>
+                            <div class="menu-content">
+                                <h3>Velvet Scallop</h3>
+                                <p>Saffron foam, caviar pearl.</p>
+                                <span class="price">$42</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="menu-card tilt-card">
+                        <div class="menu-card-inner">
+                            <div class="menu-img-wrapper">
+                                <img src="assets/menu dish 2.jpg" alt="Dish 2" class="menu-img">
+                            </div>
+                            <div class="menu-content">
+                                <h3>Smoked Wagyu</h3>
+                                <p>Cherry wood, truffle reduction.</p>
+                                <span class="price">$85</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="menu-card tilt-card">
+                        <div class="menu-card-inner">
+                            <div class="menu-img-wrapper">
+                                <img src="assets/menu dish 3.jpg" alt="Dish 3" class="menu-img">
+                            </div>
+                            <div class="menu-content">
+                                <h3>Ocean Symphony</h3>
+                                <p>Sea urchin, gold leaf.</p>
+                                <span class="price">$55</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Virtual Tour - Sticky Scroll Sequence -->
+        <section class="virtual-tour-section" id="tour">
+            <div class="tour-sticky">
+
+                <!-- Scene 1 -->
+                <div class="tour-scene active">
+                    <img src="assets/restaurant entrance.png" alt="Entrance" class="tour-img">
+                    <div class="tour-caption">
+                        <h3>The Arrival</h3>
+                        <p>Where the journey begins.</p>
+                    </div>
+                </div>
+
+                <!-- Scene 2 -->
+                <div class="tour-scene">
+                    <img src="assets/luxury dessert bar.jpg" alt="Bar" class="tour-img">
+                    <div class="tour-caption">
+                        <h3>The Altar</h3>
+                        <p>Spirits and shadows.</p>
+                    </div>
+                </div>
+
+                <!-- Scene 3 -->
+                <div class="tour-scene">
+                    <img src="assets/chef kitchen scene.jpg" alt="Kitchen" class="tour-img">
+                    <div class="tour-caption">
+                        <h3>The Forge</h3>
+                        <p>Where fire meets discipline.</p>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Spacer for scrolling duration -->
+            <div class="tour-spacer"></div>
+        </section>
+
+        <!-- Horizontal Gallery - The Runway -->
+        <section class="gallery-section" id="gallery">
+            <!-- (Existing Content preserved via context matching if I target correctly, but here I am appending after) -->
+            <div class="gallery-wrapper">
+                <div class="gallery-track">
+                    <div class="gallery-item">
+                        <img src="assets/galary image 1.jpg" alt="Atmosphere">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/galary image 2.jpg" alt="Details">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/galary image 3.jpg" alt="Wine">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/galary image 4.jpg" alt="Plating">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/villa-cortine-palace-949550.jpg" alt="Exterior">
+                    </div>
+                </div>
+            </div>
+            <!-- Overlay Text -->
+            <div class="gallery-overlay">
+                <h2>Life in Motion</h2>
+            </div>
+        </section>
+
+        <!-- Reservation Section -->
+        <section class="section-padding reservation-section" id="reservations">
+            <div class="container flex-center flex-column">
+                <div class="section-header">
+                    <span class="eyebrow">Secure Your Table</span>
+                    <h2>Reservations</h2>
+                </div>
+
+                <form class="reservation-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <select>
+                                <option>2 Guests</option>
+                                <option>4 Guests</option>
+                                <option>6 Guests</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">Request Booking</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bg">
+            <img src="assets/restaurant entrance.png" alt="Footer Mood">
+        </div>
+        <div class="container footer-content">
+            <div class="footer-logo">LUXORA</div>
+            <div class="footer-links">
+                <a href="#">Instagram</a>
+                <a href="#">Press</a>
+                <a href="#">Careers</a>
+            </div>
+            <div class="footer-copy">
+                &copy; 2026 Luxora Dining Group.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <!-- App Core -->
+    <script type="module" src="scripts/app.js"></script>
+</body>
+
+</html>
