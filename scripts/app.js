@@ -68,7 +68,6 @@ class App {
         this.textures = {
             dishBase: await load('assets/hero plate.png'),
             dishShadow: await load('assets/hero shadow.png'),
-            dishGarnish: await load('assets/hero garnish layer.jpg'),
             steam: await load('assets/hero steam texture.jpg')
         };
 
@@ -99,15 +98,6 @@ class App {
             new THREE.MeshBasicMaterial({ map: this.textures.dishBase, transparent: true })
         );
         this.dishGroup.add(plateMesh);
-
-        // Garnish (Additive for Glow)
-        const garnishMesh = new THREE.Mesh(
-            new THREE.PlaneGeometry(0.8 * scale, 0.8 * scale),
-            new THREE.MeshBasicMaterial({ map: this.textures.dishGarnish, transparent: true, blending: THREE.AdditiveBlending, opacity: 0.9 })
-        );
-        // Slightly forward for parallax
-        garnishMesh.position.z = 0.5;
-        this.dishGroup.add(garnishMesh);
     }
 
     createSteam() {
