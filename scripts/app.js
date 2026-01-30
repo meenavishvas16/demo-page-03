@@ -47,9 +47,16 @@ class App {
         this.camera = new THREE.PerspectiveCamera(35, this.width / this.height, 0.1, 100);
         this.camera.position.z = 10;
 
-        this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+        // Optimized Renderer Settings
+        this.renderer = new THREE.WebGLRenderer({
+            alpha: true,
+            antialias: false, // Performance boost
+            powerPreference: "high-performance",
+            stencil: false,
+            depth: true
+        });
         this.renderer.setSize(this.width, this.height);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Cap at 1.5x
         this.container.appendChild(this.renderer.domElement);
     }
 
@@ -68,7 +75,7 @@ class App {
         this.textures = {
             dishBase: await load('assets/hero plate.png'),
             dishShadow: await load('assets/hero shadow.png'),
-            steam: await load('assets/hero steam texture.jpg')
+            steam: await load('assets/hero steam texture.webp')
         };
 
         // Optimize Textures
@@ -163,6 +170,20 @@ class App {
             this.camera.updateProjectionMatrix();
             this.renderer.setSize(this.width, this.height);
         });
+
+        // Optimization: Create an IntersectionObserver to toggle rendering
+        this.isVisible = true;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                this.isVisible = entry.isIntersecting;
+            });
+        }, { threshold: 0 }); // Trigger as soon as one pixel is visible
+
+        // Observe the hero section (which contains the 3D content visually)
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+            observer.observe(heroSection);
+        }
     }
 
     initIntroAnimation() {
@@ -285,7 +306,11 @@ class App {
             this.steamSystem.material.uniforms.uTime.value = time;
         }
 
-        this.renderer.render(this.scene, this.camera);
+        // Optimization: Only render if visible
+        if (this.isVisible) {
+            this.renderer.render(this.scene, this.camera);
+        }
+
         requestAnimationFrame(this.tick.bind(this));
     }
 }
