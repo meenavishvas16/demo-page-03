@@ -33,13 +33,33 @@
     }
 }
 
-/* Mobile Specific Breakpoint */
-@media screen and (max-width: 768px) {
+/* Mobile Specific Breakpoint (Phones) */
+@media screen and (max-width: 767px) {
 
     /* --- Navigation --- */
     .nav-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 90;
+        pointer-events: none;
+        /* Allow clicks pass through transparent areas */
+    }
+
+    .nav-logo {
+        pointer-events: auto;
+        font-size: 1.8rem;
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        /* Visibility against content */
+    }
+
+    .nav-links {
         display: none;
-        /* Hide Desktop Nav */
+        /* Hide Desktop/Tablet menu items */
     }
 
     .mobile-nav {
