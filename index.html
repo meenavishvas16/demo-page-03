@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUXORA | The Art of Dining</title>
     <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="styles/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Local overrides for 3D integration */
         .webgl-container {
@@ -83,7 +85,7 @@
     <!-- Grain Overlay -->
     <div class="grain-overlay"></div>
 
-    <!-- Navigation -->
+    <!-- Navigation (Desktop) -->
     <nav class="nav-bar">
         <div class="nav-logo">LUXORA</div>
         <div class="nav-links">
@@ -91,6 +93,26 @@
             <a href="#story" class="nav-link">Story</a>
             <a href="#reservations" class="nav-btn">Reservations</a>
         </div>
+    </nav>
+
+    <!-- Navigation (Mobile Bottom Bar) -->
+    <nav class="mobile-nav">
+        <a href="#" class="mobile-nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="#menu" class="mobile-nav-item">
+            <i class="fa-solid fa-utensils"></i>
+            <span>Menu</span>
+        </a>
+        <a href="#story" class="mobile-nav-item">
+            <i class="fa-solid fa-book-open"></i>
+            <span>Story</span>
+        </a>
+        <a href="#reservations" class="mobile-nav-item highlight">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Book</span>
+        </a>
     </nav>
 
     <main>
